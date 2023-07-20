@@ -124,10 +124,9 @@ class Project(Generic[P]):
             "version": self.version,
             "tag": self.tag,
         }
-        match = re.match(
+        if match := re.match(
             r"(?P<major>\d+)(\.(?P<minor>\d+))?(\.(?P<micro>\d+))?", self.version
-        )
-        if match:
+        ):
             for param in ["major", "minor", "micro"]:
                 version_params[param] = match[param] or ""
 

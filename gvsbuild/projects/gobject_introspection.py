@@ -54,8 +54,7 @@ class GObjectIntrospection(Tarball, Meson):
         self.builder.mod_env("PATH", r".\girepository")
         # For linking the _giscanner.pyd extension module when using a virtualenv
         py_dir = Path(sys.executable).parent
-        py_libs = python_find_libs_dir(py_dir)
-        if py_libs:
+        if py_libs := python_find_libs_dir(py_dir):
             log.debug(f"Python library path is [{py_libs}]")
             self.builder.mod_env("LIB", py_libs, prepend=False)
 

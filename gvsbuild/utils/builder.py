@@ -619,8 +619,7 @@ class Builder:
         proj.export()
 
         if self.opts.fast_build and not proj.clean:
-            t = proj.mark_file_exist()
-            if t:
+            if t := proj.mark_file_exist():
                 log.message(f"Fast build:skipping project {proj.name}, built @ {t}")
                 proj.builder = None
                 self.__project = None
@@ -638,8 +637,7 @@ class Builder:
         paths = self.vs_env["PATH"].split(";")
         # Add the paths needed
         for d in proj.all_dependencies:
-            t = d.get_path()
-            if t:
+            if t := d.get_path():
                 if isinstance(t, tuple):
                     # pre/post
                     if t[0]:
@@ -672,9 +670,7 @@ class Builder:
         if self.opts.make_zip:
             # Create file list
             cur = self._load_built_files()
-            # delta with the old
-            new = cur - self.file_built
-            if new:
+            if new := cur - self.file_built:
                 self.__build_zip(proj, new, cur)
             else:
                 log.log(f"{proj.name}:zip not needed (tool?)")
@@ -952,7 +948,7 @@ class Builder:
         env["RUSTUP_HOME"] = cargo_home
         env["CARGO_HOME"] = cargo_home
         if rustc_opts is not None:
-            env.update(rustc_opts)
+            env |= rustc_opts
 
         # set platform
         rustup = os.path.join(cargo_home, "rustup.exe")
